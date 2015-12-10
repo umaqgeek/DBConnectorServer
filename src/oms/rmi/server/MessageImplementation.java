@@ -8,6 +8,7 @@ package oms.rmi.server;
 
 import helpers.J;
 import java.rmi.RemoteException;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +22,8 @@ import models.DBConn;
 public class MessageImplementation extends UnicastRemoteObject implements Message {    
     
     public MessageImplementation() throws RemoteException {
-        
+        super(Registry.REGISTRY_PORT);
+        System.out.println("Start Constructor Impl ..");
     }
 
     @Override

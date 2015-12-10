@@ -20,12 +20,15 @@ public class RMIConn {
     
     private static Message impl;
     private static String localRMIFlag = "DBConn";
+    private static String ipPublic = "175.141.171.197";
+    //private static String ipPublic = "192.168.1.5";
     
     public static boolean startRMI() {
         
         boolean status = true;
         try {
-            
+            // set fixed ip
+            System.setProperty("java.rmi.server.hostname", ipPublic);
             Registry myRegistry = LocateRegistry.getRegistry(DBConn.getHost(), DBConn.getPort_rmi());
             impl = (Message) myRegistry.lookup(localRMIFlag);
             status = true;
@@ -46,7 +49,7 @@ public class RMIConn {
             Registry registry = LocateRegistry.createRegistry(DBConn.getPort_rmi());
             
             // set fixed ip
-            System.setProperty("java.rmi.server.hostname", "175.141.171.197");
+            System.setProperty("java.rmi.server.hostname", ipPublic);
 
             // create a new service named myMessage
             registry.rebind(localRMIFlag, new MessageImplementation());
