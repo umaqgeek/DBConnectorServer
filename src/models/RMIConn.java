@@ -41,10 +41,12 @@ public class RMIConn {
     
     public static void startServer() {
         try {
-            System.setProperty("java.rmi.server.hostname", "175.141.171.197");
             
             // create on port 1099
             Registry registry = LocateRegistry.createRegistry(DBConn.getPort_rmi());
+            
+            // set fixed ip
+            System.setProperty("java.rmi.server.hostname", "175.141.171.197");
 
             // create a new service named myMessage
             registry.rebind(localRMIFlag, new MessageImplementation());
