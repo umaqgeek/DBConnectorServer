@@ -27,7 +27,8 @@ public class MessageImplementation extends UnicastRemoteObject implements Messag
     @Override
     public void sendMessage(String msg) throws RemoteException {
         
-        J.o("message", msg, 1);
+//        J.o("message", msg, 1);
+        System.out.println("Message Received: "+msg);
     }
     
     @Override
