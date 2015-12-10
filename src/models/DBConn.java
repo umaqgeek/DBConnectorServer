@@ -16,11 +16,13 @@ import java.util.logging.Logger;
 public class DBConn {
     private static String host = "127.0.0.1";
     private static int netTime = 2000;
-    private static String user = "root";
+    private static String user = "dba1";
     private static String pass = "qwerty";
     private static String database = "servercis";
     private static String dbUrl = "jdbc:mysql://" + getHost() + "/" + getDatabase();
     private static int port_rmi = 1098;
+    private static String stringConn = "jdbc:oracle:thin:@localhost:1521/XE";
+    private Connection oracleConn;
 
     public static String getHost() {
         return host;
@@ -47,6 +49,36 @@ public class DBConn {
             return DriverManager.getConnection(dbUrl, getUser(), pass);
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+        return null;
+    }
+    
+    private boolean startOracleConn() {
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            this.oracleConn = DriverManager.getConnection(
+                    "jdbc:oracle:thin:@localhost:1521/XE", "dba1",
+                    "qwerty");
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+    
+    public Connection getOracleConn() {
+        try {
+            boolean isConn = false;
+            if (this.oracleConn == null) {
+                isConn = startOracleConn();
+            }
+            if (isConn) {
+                return this.oracleConn;
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }

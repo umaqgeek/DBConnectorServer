@@ -9,7 +9,10 @@ package oms.rmi.server;
 import helpers.J;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
+import models.DBConn;
 
 /**
  *
@@ -31,8 +34,16 @@ public class MessageImplementation extends UnicastRemoteObject implements Messag
     public boolean setQuery(String query, String data[]) throws RemoteException {
         boolean status = false;
         try {
-            
+            DBConn dBConn = new DBConn();
+            PreparedStatement ps = dBConn.getOracleConn().prepareStatement(query);
+            for (int i = 0; i < data.length; i++) {
+                ps.setString(i+1, data[i]);
+            }
+            ps.execute();
+            status = true;
         } catch (Exception e) {
+            status = false;
+            e.printStackTrace();
         }
         return status;
     }
@@ -41,8 +52,24 @@ public class MessageImplementation extends UnicastRemoteObject implements Messag
     public ArrayList<ArrayList<String>> getQuery(String query, String data[]) throws RemoteException {
         ArrayList<ArrayList<String>> output = new ArrayList<ArrayList<String>>();
         try {
-            
+            DBConn dBConn = new DBConn();
+            PreparedStatement ps = dBConn.getOracleConn().prepareStatement(query);
+            for (int i = 0; i < data.length; i++) {
+                ps.setString(i+1, data[i]);
+            }
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ArrayList<String> mini = new ArrayList<String>();
+                try {
+                    for (int i = 0; ; i++) {
+                        mini.add(rs.getString(i+1));
+                    }
+                } catch (Exception e) {
+                }
+                output.add(mini);
+            }
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return output;
     }
