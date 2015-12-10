@@ -20,7 +20,7 @@ public class DBConn {
     private static String pass = "qwerty";
     private static String database = "servercis";
     private static String dbUrl = "jdbc:mysql://" + getHost() + "/" + getDatabase();
-    private static int port_rmi = 1098;
+    private static int port_rmi = 1099;
     private static String stringConn = "jdbc:oracle:thin:@localhost:1521/XE";
     private Connection oracleConn;
 
