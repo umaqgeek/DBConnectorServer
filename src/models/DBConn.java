@@ -23,6 +23,10 @@ public class DBConn {
     private static int port_rmi = 1099;
     private static String stringConn = "jdbc:oracle:thin:@localhost:1521/XE";
     private Connection oracleConn;
+    
+    public DBConn() {
+        startOracleConn();
+    }
 
     public static String getHost() {
         return host;
@@ -68,8 +72,8 @@ public class DBConn {
     
     public Connection getOracleConn() {
         try {
-            boolean isConn = false;
-            if (this.oracleConn == null) {
+            boolean isConn = true;
+            if (this.oracleConn.isClosed() || this.oracleConn == null) {
                 isConn = startOracleConn();
             }
             if (isConn) {
@@ -78,6 +82,7 @@ public class DBConn {
                 return null;
             }
         } catch (Exception e) {
+            System.out.println("f");
             e.printStackTrace();
         }
         return null;

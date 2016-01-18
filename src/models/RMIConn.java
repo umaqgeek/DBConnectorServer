@@ -20,7 +20,7 @@ public class RMIConn {
     
     private static Message impl;
     private static String localRMIFlag = "DBConn";
-    private static String ipPublic = "175.141.171.197";
+    public final static String ipPublic = "175.142.10.173";
     //private static String ipPublic = "192.168.1.5";
     
     public static boolean startRMI() {
@@ -42,7 +42,7 @@ public class RMIConn {
         return status;
     }
     
-    public static void startServer() {
+    public static void startServer(String ipPub) {
         try {
             
             // create on port 1099

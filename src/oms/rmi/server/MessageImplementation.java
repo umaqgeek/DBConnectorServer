@@ -6,13 +6,18 @@
 
 package oms.rmi.server;
 
+import helpers.Func;
 import helpers.J;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import models.DBConn;
 
 /**
@@ -23,40 +28,90 @@ public class MessageImplementation extends UnicastRemoteObject implements Messag
     
     public MessageImplementation() throws RemoteException {
         super(Registry.REGISTRY_PORT);
-        System.out.println("Start Constructor Impl ..");
+        System.out.println("[" + Func.getTodayDate() + "] Start Constructor Impl ..");
     }
 
     @Override
-    public void sendMessage(String msg) throws RemoteException {
+    public void sendMessageUMP(String msg) throws RemoteException {
         
 //        J.o("message", msg, 1);
-        System.out.println("Message Received: "+msg);
+        System.out.println("[" + Func.getTodayDate() + "] Message Received: "+msg);
+    }
+    
+    private static boolean isSelect(String query) {
+        if (query.toUpperCase().contains("INSERT INTO")) {
+            return true;
+        } else {
+            return false;
+        }
     }
     
     @Override
-    public boolean setQuery(String query, String data[]) throws RemoteException {
-        boolean status = false;
+    public String setQueryUMP(String query, String data[]) throws RemoteException {
+        String key = "0";
+        DBConn dBConn = new DBConn();
+        PreparedStatement ps = null;
         try {
-            DBConn dBConn = new DBConn();
-            PreparedStatement ps = dBConn.getOracleConn().prepareStatement(query);
+            
+                ps = dBConn.getOracleConn().prepareStatement(query);
+          
             for (int i = 0; i < data.length; i++) {
                 ps.setString(i+1, data[i]);
             }
             ps.execute();
-            status = true;
+                key = "0";
+            
         } catch (Exception e) {
-            status = false;
-            e.printStackTrace();
+            key = e.getMessage();
+            System.out.println("[" + Func.getTodayDate() + "] Error:"+e.getMessage());
+            //e.printStackTrace();
         }
-        return status;
+        try {
+            ps.close();
+            dBConn.getOracleConn().close();
+        } catch (SQLException ex) {
+            System.out.println("[" + Func.getTodayDate() + "] Error:"+ex.getMessage());
+        }
+        return key;
     }
     
     @Override
-    public ArrayList<ArrayList<String>> getQuery(String query, String data[]) throws RemoteException {
-        ArrayList<ArrayList<String>> output = new ArrayList<ArrayList<String>>();
+    public String setQueryUMP(String query, String data[], String priKey) throws RemoteException {
+        String key = "0";
+        DBConn dBConn = new DBConn();
+        PreparedStatement ps = null;
         try {
-            DBConn dBConn = new DBConn();
-            PreparedStatement ps = dBConn.getOracleConn().prepareStatement(query);
+            ps = dBConn.getOracleConn().prepareStatement(query, new String[]{priKey});   
+            for (int i = 0; i < data.length; i++) {
+                ps.setString(i+1, data[i]);
+            }
+            ps.executeUpdate();
+                ResultSet rs = ps.getGeneratedKeys();
+                if (rs != null && rs.next()) {
+                    key = rs.getString(1);
+                }
+        } catch (Exception e) {
+            key = e.getMessage();
+            System.out.println("[" + Func.getTodayDate() + "] Error:"+e.getMessage());
+            //e.printStackTrace();
+        }
+        try {
+            ps.close();
+            dBConn.getOracleConn().close();
+        } catch (SQLException ex) {
+            System.out.println("[" + Func.getTodayDate() + "] Error:"+ex.getMessage());
+        }
+        return key;
+    }
+    
+    @Override
+    public ArrayList<ArrayList<String>> getQueryUMP(String query, String data[]) throws RemoteException {
+        ArrayList<ArrayList<String>> output = new ArrayList<ArrayList<String>>();
+        DBConn dBConn = new DBConn();
+        PreparedStatement ps = null;
+        try {
+            
+            ps = dBConn.getOracleConn().prepareStatement(query);
             for (int i = 0; i < data.length; i++) {
                 ps.setString(i+1, data[i]);
             }
@@ -72,7 +127,14 @@ public class MessageImplementation extends UnicastRemoteObject implements Messag
                 output.add(mini);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("[" + Func.getTodayDate() + "] Error:"+e.getMessage());
+            //e.printStackTrace();
+        }
+        try {
+            ps.close();
+            dBConn.getOracleConn().close();
+        } catch (SQLException ex) {
+            System.out.println("[" + Func.getTodayDate() + "] Error:"+ex.getMessage());
         }
         return output;
     }
