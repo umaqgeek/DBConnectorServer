@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  * @author End User
  */
 public class DBConn {
-    private static String host = "127.0.0.1";
+    private static String host = "192.168.1.7";
     private static int netTime = 2000;
     private static String user = "dba1";
     private static String pass = "qwerty";
@@ -61,12 +61,16 @@ public class DBConn {
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
             this.oracleConn = DriverManager.getConnection(
-                    "jdbc:oracle:thin:@localhost:1521/XE", "dba1",
-                    "qwerty");
+                    "jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)"
+                            + "(HOST=192.168.1.7)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=UMPDB)))", "cmsadmin", "7");
+            //this.oracleConn = DriverManager.getConnection(
+            //        "jdbc:oracle:thin:@localhost:1521/XE", "dba1", "qwerty");
             return true;
         } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
+            //ex.printStackTrace();
+            //System.exit(1);
+            System.out.println("Error Oracle: "+ex.getMessage());
+            return startOracleConn();
         }
     }
     

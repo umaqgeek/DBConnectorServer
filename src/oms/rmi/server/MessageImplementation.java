@@ -128,6 +128,10 @@ public class MessageImplementation extends UnicastRemoteObject implements Messag
             }
         } catch (Exception e) {
             System.out.println("[" + Func.getTodayDate() + "] Error:"+e.getMessage());
+            output.removeAll(output);
+            ArrayList<String> errors = new ArrayList<String>();
+            errors.add(e.getMessage());
+            output.add(errors);
             //e.printStackTrace();
         }
         try {
@@ -135,6 +139,10 @@ public class MessageImplementation extends UnicastRemoteObject implements Messag
             dBConn.getOracleConn().close();
         } catch (SQLException ex) {
             System.out.println("[" + Func.getTodayDate() + "] Error:"+ex.getMessage());
+            output.removeAll(output);
+            ArrayList<String> errors = new ArrayList<String>();
+            errors.add(ex.getMessage());
+            output.add(errors);
         }
         return output;
     }
