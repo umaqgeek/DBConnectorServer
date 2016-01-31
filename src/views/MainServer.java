@@ -5,6 +5,10 @@
  */
 package views;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import models.DBConn;
 import models.RMIConn;
 
 /**
@@ -13,7 +17,7 @@ import models.RMIConn;
  */
 public class MainServer {
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         
         String ipPublic1 = "";
         
@@ -26,5 +30,20 @@ public class MainServer {
         System.out.println("Starting server ...");
         RMIConn.startServer(ipPublic1);
         System.out.println("Server started.");
+        
+        DBConn dBConn = new DBConn();
+        String sql = "SELECT * FROM login1 ";
+        //String sql = "SELECT * FROM warrant_main_head ";
+        PreparedStatement ps = dBConn.getOracleConn().prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            try {
+                for (int i = 0; ; i++) {
+                    System.out.print(rs.getString(i+1)+" | ");
+                }
+            } catch (Exception e) {
+            }
+            System.out.println("");
+        }
     }
 }
