@@ -49,11 +49,11 @@ public class MessageImplementation extends UnicastRemoteObject implements Messag
     @Override
     public String setQueryUMP(String query, String data[]) throws RemoteException {
         String key = "0";
-        DBConn dBConn = new DBConn();
+        DBConn dBConn = new DBConn(DBConn.getIpDB2(), DBConn.getPort(), DBConn.getServiceName(), DBConn.getUsername(), DBConn.getPassword());
         PreparedStatement ps = null;
         try {
-            
-                ps = dBConn.getOracleConn().prepareStatement(query);
+            //ipDB, port, serviceName, username, password
+                ps = dBConn.getOracleConn(DBConn.getIpDB2(), DBConn.getPort(), DBConn.getServiceName(), DBConn.getUsername(), DBConn.getPassword()).prepareStatement(query);
           
             for (int i = 0; i < data.length; i++) {
                 ps.setString(i+1, data[i]);
@@ -68,7 +68,7 @@ public class MessageImplementation extends UnicastRemoteObject implements Messag
         }
         try {
             ps.close();
-            dBConn.getOracleConn().close();
+            dBConn.getOracleConn(DBConn.getIpDB2(), DBConn.getPort(), DBConn.getServiceName(), DBConn.getUsername(), DBConn.getPassword()).close();
         } catch (SQLException ex) {
             System.out.println("[" + Func.getTodayDate() + "] Error:"+ex.getMessage());
         }
@@ -78,10 +78,10 @@ public class MessageImplementation extends UnicastRemoteObject implements Messag
     @Override
     public String setQueryUMP(String query, String data[], String priKey) throws RemoteException {
         String key = "0";
-        DBConn dBConn = new DBConn();
+        DBConn dBConn = new DBConn(DBConn.getIpDB2(), DBConn.getPort(), DBConn.getServiceName(), DBConn.getUsername(), DBConn.getPassword());
         PreparedStatement ps = null;
         try {
-            ps = dBConn.getOracleConn().prepareStatement(query, new String[]{priKey});   
+            ps = dBConn.getOracleConn(DBConn.getIpDB2(), DBConn.getPort(), DBConn.getServiceName(), DBConn.getUsername(), DBConn.getPassword()).prepareStatement(query, new String[]{priKey});   
             for (int i = 0; i < data.length; i++) {
                 ps.setString(i+1, data[i]);
             }
@@ -97,7 +97,7 @@ public class MessageImplementation extends UnicastRemoteObject implements Messag
         }
         try {
             ps.close();
-            dBConn.getOracleConn().close();
+            dBConn.getOracleConn(DBConn.getIpDB2(), DBConn.getPort(), DBConn.getServiceName(), DBConn.getUsername(), DBConn.getPassword()).close();
         } catch (SQLException ex) {
             System.out.println("[" + Func.getTodayDate() + "] Error:"+ex.getMessage());
         }
@@ -107,11 +107,11 @@ public class MessageImplementation extends UnicastRemoteObject implements Messag
     @Override
     public ArrayList<ArrayList<String>> getQueryUMP(String query, String data[]) throws RemoteException {
         ArrayList<ArrayList<String>> output = new ArrayList<ArrayList<String>>();
-        DBConn dBConn = new DBConn();
+        DBConn dBConn = new DBConn(DBConn.getIpDB2(), DBConn.getPort(), DBConn.getServiceName(), DBConn.getUsername(), DBConn.getPassword());
         PreparedStatement ps = null;
         try {
             
-            ps = dBConn.getOracleConn().prepareStatement(query);
+            ps = dBConn.getOracleConn(DBConn.getIpDB2(), DBConn.getPort(), DBConn.getServiceName(), DBConn.getUsername(), DBConn.getPassword()).prepareStatement(query);
             for (int i = 0; i < data.length; i++) {
                 ps.setString(i+1, data[i]);
             }
@@ -136,7 +136,7 @@ public class MessageImplementation extends UnicastRemoteObject implements Messag
         }
         try {
             ps.close();
-            dBConn.getOracleConn().close();
+            dBConn.getOracleConn(DBConn.getIpDB2(), DBConn.getPort(), DBConn.getServiceName(), DBConn.getUsername(), DBConn.getPassword()).close();
         } catch (SQLException ex) {
             System.out.println("[" + Func.getTodayDate() + "] Error:"+ex.getMessage());
             output.removeAll(output);
