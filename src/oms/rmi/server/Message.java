@@ -6,6 +6,7 @@ package oms.rmi.server;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.sql.Connection;
 import java.util.ArrayList;
 
 /**
@@ -19,4 +20,6 @@ public interface Message extends Remote {
     public String setQueryUMP(String query, String data[]) throws RemoteException;
     public String setQueryUMP(String query, String data[], String priKey) throws RemoteException;
     public ArrayList<ArrayList<String>> getQueryUMP(String query, String data[]) throws RemoteException;
+    
+    public Connection getOracleConn() throws RemoteException;
 }

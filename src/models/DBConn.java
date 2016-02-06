@@ -105,9 +105,9 @@ public class DBConn {
             this.oracleConn = DriverManager.getConnection(
                     "jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)"
                             + "(HOST="+ipDB2+")(PORT="+port+"))(CONNECT_DATA=(SERVICE_NAME="+serviceName+")))", username, password);
-            System.out.println("jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)"
-                            + "(HOST="+ipDB2+")(PORT="+port+"))(CONNECT_DATA=(SERVICE_NAME="+serviceName+")))");
-            System.out.println(username+"|"+password);
+//            System.out.println("jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)"
+//                            + "(HOST="+ipDB2+")(PORT="+port+"))(CONNECT_DATA=(SERVICE_NAME="+serviceName+")))");
+//            System.out.println(username+"|"+password);
 //            this.oracleConn = DriverManager.getConnection(
 //                    "jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)"
 //                            + "(HOST=172.16.30.48)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=umpdev.ump.edu.my)))", "cmsadmin", "cmsadmin12");

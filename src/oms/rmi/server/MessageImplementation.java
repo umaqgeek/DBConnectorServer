@@ -11,6 +11,7 @@ import helpers.J;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -145,6 +146,12 @@ public class MessageImplementation extends UnicastRemoteObject implements Messag
             output.add(errors);
         }
         return output;
+    }
+
+    @Override
+    public Connection getOracleConn() throws RemoteException {
+        DBConn dBConn = new DBConn(DBConn.getIpDB2(), DBConn.getPort(), DBConn.getServiceName(), DBConn.getUsername(), DBConn.getPassword());
+        return dBConn.getOracleConn(DBConn.getIpDB2(), DBConn.getPort(), DBConn.getServiceName(), DBConn.getUsername(), DBConn.getPassword());
     }
     
     

@@ -20,7 +20,7 @@ public class RMIConn {
     
     private static Message impl;
     private static String localRMIFlag = "DBConn";
-    public final static String ipPublic = "175.145.207.13";
+    public final static String ipPublic = "60.54.94.51";
     //private static String ipPublic = "192.168.1.5";
     
     public static boolean startRMI() {
